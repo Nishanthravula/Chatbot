@@ -7,9 +7,6 @@ import BotMessage from "./components/BotMessage";
 import UserMessage from "./components/UserMessage";
 import Messages from "./components/Messages";
 import Input from "./components/Input";
-
-import API from "./ChatbotAPI";
-
 import "./styles.css";
 import Header from "./components/Header";
 
@@ -39,11 +36,11 @@ function Chatbot() {
     const type = `Content-Type: application/json`;
     axios({
       method: "POST",
-      url: "https://34.27.136.111:9999/bot",
+      url: "http://192.168.1.130:9999/bot",
       headers: { type },
       data: {
         query: userMessage,
-        topic: topic?topic:" ",
+        topic: topic?topic:"",
       },
     })
       .then((res) => {

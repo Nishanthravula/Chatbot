@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Select from 'react-select';
 export default function Input({ onSend, onTop }) {
 const selectableOptions = [
   { value: 'Politics',label: 'Politics' },
-  { value: 'Health',label:'Health' },
+  { value: 'Health care',label:'Healthcare' },
   { value: 'Education',label:'Education' },
-  { value: 'Envi', label:'Envi' }
+  { value: 'Technology', label:'Technology' },
+  { value: 'Environment', label:'Environment' },
+
 ]
 
 
@@ -36,6 +37,7 @@ const selectableOptions = [
       <div className="drop" >
       <Select
         className="input-cont"
+        menuPlacement="top"
         placeholder= "Select a topic"
         onChange={(e)=>setTopic(e.value)}
         options={selectableOptions}

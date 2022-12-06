@@ -30,7 +30,7 @@ export default function BotMessage({ fetchMessage,fetchtopic }) {
    <>
      {/* {message?message.length>0?   */}
     <div className="message-container">
-     <div className="bot-message">{message?message:null}</div>
+     <div className="bot-message animate__animated animate__bounceInUp">{message?message:null}</div>
     </div>
 
     {/* :null:null} */}
