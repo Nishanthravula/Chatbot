@@ -10,7 +10,7 @@
   width: 500px;
   overflow: hidden;
   margin: auto;
-  /* width: 50%; */
+  width: 50%;
 }
 
 .header {
@@ -97,5 +97,28 @@
   padding: 14px 16px 12px 16px;
   position: absolute;
   right: 0;
-  top: 0;
+  /* top: 0; */
+}
+
+.animate__animated.animate__bounceInUp {
+  --animate-duration: 0.5s;
+}
+
+.drop {
+  float: right;
+  width: max-content;
+
+}
+
+.input-cont{
+  width: max-content;
+}
+button{
+  padding: 8px 15px;
+  border: none;
+  color: #fff;
+  background-color: rgb(79, 79, 237);
+  border-radius: 8px;
+  margin-top: 5px;
+  
 }

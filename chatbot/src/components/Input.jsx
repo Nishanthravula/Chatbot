@@ -1,26 +1,47 @@
 import React, { useState } from "react";
+import axios from "axios";
+import Select from 'react-select';
+export default function Input({ onSend, onTop }) {
+const selectableOptions = [
+  { value: 'Politics',label: 'Politics' },
+  { value: 'Health',label:'Health' },
+  { value: 'Education',label:'Education' },
+  { value: 'Envi', label:'Envi' }
+]
 
-export default function Input({ onSend }) {
+
+  const [topic, setTopic] = useState("");
+
   const [text, setText] = useState("");
-
+  // console.log(topic);
   const handleInputChange = e => {
     setText(e.target.value);
+    
   };
-
-  const handleSend = e => {
+  const handleSend = (e,f) => {
     e.preventDefault();
     onSend(text);
-    setText("");
-    // if (typeof value !== "undefined") {
-    //     if (!value.match(/^[a-zA-Z]+$/)) {
-         
-    //     }
-    //   }
+    setText("");  
+    // e.preventDefault();
+    onTop(topic);
+    setTopic(""); 
+    
   };
-
+  console.log(text, topic)
   return (
     <div className="input">
+     
+   
       <form onSubmit={handleSend}>
+      <div className="drop" >
+      <Select
+        className="input-cont"
+        placeholder= "Select a topic"
+        onChange={(e)=>setTopic(e.value)}
+        options={selectableOptions}
+        topic ={topic}
+      />
+    </div>
         <input
           type="text"
           onChange={handleInputChange}
@@ -28,7 +49,9 @@ export default function Input({ onSend }) {
           validator
           placeholder="Enter your message here"
         />
+         
         <button>
+      
           <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
