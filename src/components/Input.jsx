@@ -27,7 +27,7 @@ const selectableOptions = [
     setTopic(""); 
     
   };
-  console.log(text, topic)
+  // console.log(text, topic)
   return (
     <div className="input">
      

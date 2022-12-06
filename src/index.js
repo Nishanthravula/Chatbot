@@ -39,11 +39,11 @@ function Chatbot() {
     const type = `Content-Type: application/json`;
     axios({
       method: "POST",
-      url: "http://34.27.136.111:9999/bot",
+      url: "https://34.27.136.111:9999/bot",
       headers: { type },
       data: {
         query: userMessage,
-        topic: topic?topic:"Polictics",
+        topic: topic?topic:" ",
       },
     })
       .then((res) => {

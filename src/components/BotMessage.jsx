@@ -25,7 +25,7 @@ export default function BotMessage({ fetchMessage,fetchtopic }) {
   // }, [fetchtopic]);
   
 
-  console.log({message})
+  // console.log({message})
   return (
    <>
      {/* {message?message.length>0?   */}
