@@ -7,6 +7,9 @@ const selectableOptions = [
   { value: 'Education',label:'Education' },
   { value: 'Technology', label:'Technology' },
   { value: 'Environment', label:'Environment' },
+  { value: 'All', label: 'All'},
+  { value: 'Chitchat', label: 'Chitchat'}
+
 
 ]
 
