@@ -4,22 +4,23 @@ Institute: University at Buffalo
 '''
 
 import json
-import random
 
 import urllib
 import urllib.request
 import urllib.parse
-
-import redditcleaner
 from flask import request
 from similarity import classifier
-from flask import Flask
+from flask import Flask, render_template
+# from flask import Flask
 from flask_cors import cross_origin
+# from flask import render_template
+import redditcleaner
 
 app = Flask(__name__)
 ir_model = 'mycol1'
 reddit_ir_model = 'reddit'
 similarity_classifier = classifier()
+
 
 
 def get_top_5_chit_chat_query_matches(query):
@@ -78,14 +79,13 @@ def get_top_k_topic_answers(documents, k):
 
 def topic_query(topic, query):
     topic_query_documents = get_top_5_topic_query_matches(topic, query)
-    documents = get_top_k_topic_answers(topic_query_documents, 10)
-    result = [document['body'] for document in documents]
+    documents = get_top_k_topic_answers(topic_query_documents, 5)
+    result = [redditcleaner.clean(document['body']) for document in documents]
     # result = [redditcleaner.clean(text) for text in result]
-    reply = random.choice(result)
-    reply = redditcleaner.clean(reply)
-    result_list = reply.split()[:50]
-    bot_reply = " ".join(result_list)
-    return bot_reply  # first 50 words
+    bot_reply = similarity_classifier.get_top_similarity_answer(query, result)
+    result_list = bot_reply.split()[:50]
+    result_str = " ".join(result_list)
+    return result_str  # first 5 words
 
 
 def chit_chat_query(query):
@@ -102,6 +102,7 @@ def chit_chat_query(query):
     else:
         return bot_reply
 
+
 def get_reddit_results(query):
     reddit_query = "parent_body:(%s)" % query
     query_dict = {"q": reddit_query}
@@ -110,7 +111,7 @@ def get_reddit_results(query):
                '&fl=body%2Cscore&wt=json&indent=true&rows=3'
     response_result = urllib.request.urlopen(solr_url)
     documents = json.load(response_result)['response']['docs']
-    return [document['body'] for document in documents]
+    return [redditcleaner.clean(document['body']) for document in documents]
 
 def common_query(query):
     reddit_results = get_reddit_results(query)
@@ -123,10 +124,10 @@ def common_query(query):
     chit_chat_results = [document['text'][0] for document in response_docs]
     final_result = reddit_results + chit_chat_results
     bot_reply = similarity_classifier.get_top_similarity_answer(query, final_result)
-    bot_reply = redditcleaner.clean(bot_reply)
     bot_result = bot_reply.split()[:50]
     result = " ".join(bot_result)
     return result
+
 
 
 @app.route("/bot", methods=['POST'])
@@ -134,6 +135,11 @@ def common_query(query):
 def execute_query():
     """ This function handles the POST request to your endpoint.
         Do NOT change it."""
+    print("entered")
+    # print("request", request.json['topic'])
+    # print("request", request)
+    # print("request", request.args.get('topic'))
+    # print("request", request.json)
     request_json = dict(request.json)
     topic_name = ""
     print(request_json.keys)
@@ -147,8 +153,12 @@ def execute_query():
     else:
         return topic_query(topic_name, query)
 
+@app.route('/')
+def index():
+    return render_template("sample.html")
 
 if __name__ == "__main__":
     """ Driver code for the project, which defines the global variables.
         Do NOT change it."""
-    app.run(host="0.0.0.0", port=9999)
+    # app.run(host="0.0.0.0", port=9999, debug=True)
+    app.run(debug=True)
